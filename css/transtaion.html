@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>按钮控制div显示和隐藏（动画）</title>
+    <style>
+    .my-transition {
+        margin-top: 200px;
+        width: 100px;
+        height: 100px;
+        background: yellow;
+        transform: scale(0.5, 0.5);
+        opacity: 0;
+        transition: transform 0.5s linear, opacity 0.5s linear;
+    }
+
+    .my-click-transiton {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+    .my-test{
+        width: 200px;
+        height: 200px;
+        background: gray;
+        visibility: visible;
+        /* opacity: 1;  */
+        transition: all linear 2s;
+    }
+    .my-test:hover{
+        width: 0;
+        height: 0;
+        background: gray;
+        overflow: hidden;
+    }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+</head>
+
+<body>
+    <input type="button" id="mybutton" value="click">
+    <div class="my-transition"></div>
+    <div class="my-test">content</div>
+    <p>
+        控制元素的显示隐藏方法：<br>
+        1. 使用 opacity 来实现 <br>
+        2. 将元素的width height margin padding 加上 设置 overflow：hidden 来是现实 <br>
+        3. display 不是过渡属性
+        但是hover的过渡效果会持续触发
+    </p>
+    <script>
+    //用js触发CSS3-transition过渡动画
+    $('#mybutton').click(function() {
+        var myTransition = $('.my-transition');
+        if (myTransition.hasClass('my-click-transiton')) {
+            myTransition.removeClass('my-click-transiton')
+        } else {
+            $('.my-transition').addClass('my-click-transiton');
+        }
+    });
+    </script>
+</body>
+</html>
