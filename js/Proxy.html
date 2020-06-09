@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+     .input{
+        width: 100px;
+        height: 20px;
+    }
+    .border{
+        border: 1px solid black;
+    }
+    .red-border{
+        border: 1px solid red;
+    }
+</style>
+<body>
+    proxy 为拦截器<br>
+    借鉴地址： https://developers.weixin.qq.com/community/develop/article/doc/00062c37fdcd98c2507a9b2bd5b813<br>
+    es6: https://es6.ruanyifeng.com/#docs/proxy<br>
+    1.ES6提供原生Proxy构造函数，用来生成proxy实例<br>
+    <code>
+        <!-- let proxy = new Proxy(target , handler) -->
+        let proxy = new Proxy({} , {
+            get: function(target , propKey){
+                console.log(target); // {}
+                console.log(propKey); // 
+                return 33
+            }
+        })
+        console.log(proxy.title) 
+        console.log(proxy.name)
+    </code><br>
+   
+    target表示要拦截的对象 ， handler用来定制拦截行为<br>
+    <br>
+    <br>
+    <br>
+    <input id='ageInput' type="text" class="input border" placeholder="年龄" oninput="inputAge(this.value)">
+</body>
+<script>
+    // 拦截的行为
+let validator = {
+    set: function(target , porpKey , value , reveiver){
+        if(porpKey == 'age'){
+            // 大于20 异常
+            assert(value > 20 , 'more 20');
+            // 小于10 异常
+            assert(value < 10 , 'less 10');
+        }
+        target[porpKey] = value;
+    },
+    get: function(target , porpKey , receiver){
+        return target[porpKey];
+    }
+}
+let data = new Proxy({} , validator);
+// 防抖
+let throttle = {
+    wait: 1000 , 
+    timeoutId: null ,
+    process: function(func , ...nums){
+        if(typeof func == 'function'){
+            clearTimeout(this.timeoutId);
+            this.timeoutId = setTimeout(()=>{
+                func(...nums)
+            } , this.wait)
+        }
+    }
+}
+function inputAge(val){
+    console.log('change')
+    let age = Number(val);
+    throttle.process(validAge , age)
+}
+let ageInput = document.querySelector("#ageInput")
+function validAge(age){
+    try {
+        data.age = age;
+        console.log(data.age, 'normal')
+        ageInput.classList.add("border")
+        ageInput.classList.remove("red-border")
+    } catch (error) {
+        // 异常的情况下边框要变红
+        console.log(data.age, 'error')
+        ageInput.classList.remove("border")
+        ageInput.classList.add("red-border")
+        console.log(error.message)                
+    }
+}
+// 自定义的抛异常的函数
+function assert(condition , msg){
+    if(condition){
+        throw new Error(msg)
+    }
+}
+</script>
+</html>
