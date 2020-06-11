@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    借鉴地址： https://juejin.im/post/59e85eebf265da430d571f89
+    <img src="../image/event-loop.png" style="width: 400px;"><br>
+    <p>
+        执行顺序： 从上倒下， 同步任务 =》 异步任务 <br>
+        具体的异步任务： 宏任务（script，计时器 settimeout setinterval） 微任务（promise 回调函数  nextcTick）<br>
+        具体代码执行顺行： 宏任务(第一次从上到下，执行同步任务，注册异步任务回调函数) => 有微任务，执行本次注册的所有微任务 => 执行下一个宏任务（宏任务一个一个执行） => 执行所有微任务 。。。。。。（循环）
+        总结：送上到下，按照循环规则， 任务类别， 一层一层执行
+    </p><br>
+    <img src="../image/task.png" style="width: 400px;"><br>
+
+    <script src='https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <script>
+        // setTimeout(function(){
+        //     console.log('定时器开始啦')
+        // });
+
+        // new Promise(function(resolve){
+        //     console.log('马上执行for循环啦');
+        //     for(var i = 0; i < 10000; i++){
+        //         i == 99 && resolve();
+        //     }
+        // }).then(function(){
+        //     console.log('执行then函数啦')
+        // });
+
+        // console.log('代码执行结束');
+
+
+        // let data = [];
+        // $.ajax({
+        //     url:'wwww.javascript.com',
+        //     data:data,
+        //     success:() => {
+        //         console.log('发送成功!');
+        //     }
+        // })
+        // console.log('代码执行结束');
+        // 代码执行结束   发送成功
+
+        console.log('1');
+
+setTimeout(function() {
+    console.log('2');
+    process.nextTick(function() {
+        console.log('3');
+    })
+    new Promise(function(resolve) {
+        console.log('4');
+        resolve();
+    }).then(function() {
+        console.log('5')
+    })
+})
+process.nextTick(function() {
+    console.log('6');
+})
+new Promise(function(resolve) {
+    console.log('7');
+    resolve();
+}).then(function() {
+    console.log('8')
+})
+
+setTimeout(function() {
+    console.log('9');
+    process.nextTick(function() {
+        console.log('10');
+    })
+    new Promise(function(resolve) {
+        console.log('11');
+        resolve();
+    }).then(function() {
+        console.log('12')
+    })
+})
+// 执行结果：
+//  1  7 6 8 2 4 3 5 9 11 10 12
+    </script>
+</body>
+</html>
+
