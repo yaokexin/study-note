@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    class 的学习<br>
+    地址： <a href="https://es6.ruanyifeng.com/#docs/class">es6 class</a><br>
+    涉及： 构造函数  原型 原型链
+
+    <script>
+    // 来源： 构造函数
+
+//     function Point(x, y) {
+//         this.x = x;
+//         this.y = y;
+//         }
+
+// Point.prototype.toString = function () {
+//   return '(' + this.x + ', ' + this.y + ')';
+// };
+
+// var p = new Point(1, 2);
+// console.log(p.toString());
+
+// 使用class 进行升级
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return '(' + this.x + ', ' + this.y + ')';
+  }
+}
+
+typeof Point // "function"
+console.log(typeof Point);
+Point === Point.prototype.constructor // true
+console.log(new Point(1,2).toString())
+
+Point.prototype.constructor === Point // true
+// 添加类 的 方法 在类的prototype添加
+Object.assign(Point.prototype, {
+  toString(){ console.log('toString')},
+  toValue(){}
+});
+console.log(new Point().toString())
+    </script>
+</body>
+</html>
