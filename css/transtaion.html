@@ -33,11 +33,52 @@
         background: gray;
         overflow: hidden;
     }
+    html{
+ background: #ad4e24;
+}
+.ball{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 40px;
+  z-index: 10;
+  right: 40px;
+  background: greenyellow;
+}
+
+.run_top_right {
+  display: block;
+  animation: run-right-right 3s 0.4s 1 linear, run-right-top 3s 0.4s 1 cubic-bezier(.4,.54,.77,1.52);
+  animation-fill-mode: forwards;
+}
+
+@keyframes run-right-top {
+  0% {
+    bottom: 40px;
+  }
+
+  100% {
+    bottom: 800px;
+  }
+}
+@keyframes run-right-right {
+  0% {
+    right: 40px;
+    /* transform: scale(0.7); */
+  }
+
+  100% {
+    right: 600px;
+    /* transform: scale(0.45); */
+  }
+}
     </style>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 </head>
 
 <body>
+    <div class="ball run_top_right"></div>
     <input type="button" id="mybutton" value="click">
     <div class="my-transition"></div>
     <div class="my-test">content</div>
